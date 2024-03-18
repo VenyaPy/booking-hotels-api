@@ -8,3 +8,5 @@
 - Celary, 
 - Reddis, 
 - Postgresql
+- SQLAlchemy
+- Alembic
