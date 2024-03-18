@@ -37,18 +37,6 @@ class BookingDAO(BaseDAO):
         date_from: date,
         date_to: date,
     ):
-        """
-        WITH booked_rooms AS (
-            SELECT * FROM bookings
-            WHERE room_id = 1 AND
-                (date_from >= '2023-05-15' AND date_from <= '2023-06-20') OR
-                (date_from <= '2023-05-15' AND date_to > '2023-05-15')
-        )
-        SELECT rooms.quantity - COUNT(booked_rooms.room_id) FROM rooms
-        LEFT JOIN booked_rooms ON booked_rooms.room_id = rooms.id
-        WHERE rooms.id = 1
-        GROUP BY rooms.quantity, booked_rooms.room_id
-        """
         try:
             async with async_session_maker() as session:
                 booked_rooms = (
@@ -71,12 +59,6 @@ class BookingDAO(BaseDAO):
                     .cte("booked_rooms")
                 )
 
-                """
-                SELECT rooms.quantity - COUNT(booked_rooms.room_id) FROM rooms
-                LEFT JOIN booked_rooms ON booked_rooms.room_id = rooms.id
-                WHERE rooms.id = 1
-                GROUP BY rooms.quantity, booked_rooms.room_id
-                """
 
                 get_rooms_left = (
                     select(
@@ -90,8 +72,6 @@ class BookingDAO(BaseDAO):
                     .group_by(Rooms.quantity, booked_rooms.c.room_id)
                 )
 
-                # Рекомендую выводить SQL запрос в консоль для сверки
-                # logger.debug(get_rooms_left.compile(engine, compile_kwargs={"literal_binds": True}))
 
                 rooms_left = await session.execute(get_rooms_left)
                 rooms_left: int = rooms_left.scalar()

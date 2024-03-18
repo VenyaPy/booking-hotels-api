@@ -32,28 +32,23 @@ app = FastAPI(
 
 
 if settings.MODE != "TEST":
-    # Подключение Sentry для мониторинга ошибок. Лучше выключать на период локального тестирования
     sentry_sdk.init(
         dsn=settings.SENTRY_DSN,
         traces_sample_rate=1.0,
     )
 
 
-# Включение основных роутеров
 app.include_router(router_auth)
 app.include_router(router_users)
 app.include_router(router_hotels)
 app.include_router(router_bookings)
 
-# Включение дополнительных роутеров
 app.include_router(router_images)
 app.include_router(router_prometheus)
 app.include_router(router_import)
 
 
-# Подключение CORS, чтобы запросы к API могли приходить из браузера 
 origins = [
-    # 3000 - порт, на котором работает фронтенд на React.js 
     "http://localhost:3000",
 ]
 
@@ -77,9 +72,6 @@ app = VersionedFastAPI(app,
 app.include_router(router_pages)
 
 if settings.MODE == "TEST":
-    # При тестировании через pytest, необходимо подключать Redis, чтобы кэширование работало.
-    # Иначе декоратор @cache из библиотеки fastapi-cache ломает выполнение кэшируемых эндпоинтов.
-    # Из этого следует вывод, что сторонние решения порой ломают наш код, и это бывает проблематично поправить.
     redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
@@ -89,7 +81,6 @@ def startup():
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
 
-# Подключение эндпоинта для отображения метрик для их дальнейшего сбора Прометеусом
 instrumentator = Instrumentator(
     should_group_status_codes=False,
     excluded_handlers=[".*admin.*", "/metrics"],
@@ -118,5 +109,4 @@ async def add_process_time_header(request: Request, call_next):
     })
     return response
 
-# Вы можете заметить один из минусов FastAPI -- вся конфигурация происходит
-# в одном файле. Порой он может довольно сильно разрастаться.
+

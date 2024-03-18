@@ -14,7 +14,6 @@ else:
 
 engine = create_async_engine(DATABASE_URL, **DATABASE_PARAMS)
 
-# Во 2.0 версии Алхимии был добавлен async_sessionamaker.
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 class Base(DeclarativeBase):
