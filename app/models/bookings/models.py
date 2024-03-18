@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, JSON, Date, ForeignKey, Computed, Extract
-from app.database.datebase import Base
+from sqlalchemy import Column, Integer, Date, ForeignKey
+from app.datebase import Base
 
 
 class Bookings(Base):

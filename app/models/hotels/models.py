@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, JSON
 
-from app.database.datebase import Base
+from app.datebase import Base
 
 
 class Hotels(Base):

@@ -9,7 +9,7 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 
-from app.database.datebase import Base, DATABASE_URL
+from app.datebase import Base, DATABASE_URL
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

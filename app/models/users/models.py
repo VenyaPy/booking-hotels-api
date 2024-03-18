@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, JSON, Date, ForeignKey, Computed, VARCHAR
-from app.database.datebase import Base
+from sqlalchemy import Column, Integer, String
+from app.datebase import Base
 
 
 class Users(Base):

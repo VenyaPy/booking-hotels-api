@@ -1,4 +1,7 @@
-sqlalchemy==2.0.28
-alembic==1.13.1
-fastapi==0.110.0
-pydantic==2.6.4
+fastapi[all]
+sqlalchemy
+alembic
+pydantic
+passlib
+python-jose
+asyncpg
